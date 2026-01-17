@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log
+pnpm-lock.yaml
+
+# Laravel
+/vendor
+.env
+.env.*
+storage/*.key
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+
+# Vite
+dist
+.vite
+
+# IDE
+.idea
+.vscode
