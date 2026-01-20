@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ShoppingListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MeController;
@@ -11,8 +12,15 @@ Route::post('/register', RegisterController::class);
 Route::post('/login', LoginController::class);
 
 // Protected routes require token
-Route::middleware('auth:sanctum')->get('/me', \App\Http\Controllers\Auth\MeController::class);
-Route::middleware('auth:sanctum')->post('/logout', LogoutController::class);
+Route::middleware('auth:sanctum')->group(function () {
+	Route::get('/me', MeController::class);
+	Route::post('/logout', LogoutController::class);
+
+    Route::get('/shopping-lists', [ShoppingListController::class, 'index']);
+    Route::post('/shopping-list', [ShoppingListController::class, 'store']);
+    Route::get('/shopping-list/{id}', [ShoppingListController::class, 'find']);
+});
+
 
 
 

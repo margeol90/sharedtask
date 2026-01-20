@@ -1,6 +1,6 @@
 // src/stores/auth.js
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from './../api/http.js'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', {
     saveToken(token) {
       this.token = token
       localStorage.setItem('token', token)
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     },
 
     persistAuthState() {
@@ -42,19 +42,19 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async register(name, email, password, password_confirmation) {
-      const response = await axios.post('http://localhost:8000/api/register', {
+      const response = await api.post('/api/register', {
         name, email, password, password_confirmation
       })
       this.saveAuthState(response.data)
     },
 
     async login(email, password) {
-      const response = await axios.post('http://localhost:8000/api/login', { email, password })
+      const response = await api.post('/api/login', { email, password })
       this.saveAuthState(response.data)
     },
 
     async fetchMe() {
-      const response = await axios.get('http://localhost:8000/api/me')
+      const response = await api.get('/api/me')
 
       this.user = response.data.user
       this.accounts = response.data.user.accounts
@@ -68,7 +68,7 @@ export const useAuthStore = defineStore('auth', {
 
     async logout() {
       try {
-        await axios.post('http://localhost:8000/api/logout')
+        await api.post('/api/logout')
       } catch (e) {
         console.warn('Logout API failed, clearing locally')
       }
@@ -81,12 +81,12 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('user')
       localStorage.removeItem('accounts')
       localStorage.removeItem('activeAccount')
-      delete axios.defaults.headers.common['Authorization']
+      delete api.defaults.headers.common['Authorization']
     },
 
     async init() {
       if (this.token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+        api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       }
       this.isReady = true
     },

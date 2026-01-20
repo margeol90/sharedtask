@@ -12,4 +12,10 @@ class Account extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function shoppingLists()
+    {
+        return $this->hasMany(ShoppingList::class);
+    }
+
 }
