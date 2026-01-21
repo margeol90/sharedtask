@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\ShoppingListController;
+use App\Http\Controllers\Api\{ShoppingListController, ShoppingItemController };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MeController;
@@ -19,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/shopping-lists', [ShoppingListController::class, 'index']);
     Route::post('/shopping-list', [ShoppingListController::class, 'store']);
     Route::get('/shopping-list/{id}', [ShoppingListController::class, 'find']);
+
+    Route::get('/shopping-lists/{shoppingList}/items', [ShoppingItemController::class, 'index',]);
+    Route::post('/shopping-lists/{shoppingList}/items', [ShoppingItemController::class, 'store',]);
 });
 
 
