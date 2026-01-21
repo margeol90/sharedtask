@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\ShoppingList;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetShoppingListsRequest;
 
 class ShoppingListController extends Controller
 {
-    public function index(Request $request)
+    public function index(GetShoppingListsRequest $request)
     {
         $account = $request->user()->activeAccount;
 
