@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\ShoppingList;
 use App\Rules\UserHasAccountAccessRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetShoppingListsRequest extends FormRequest
+class GetShoppingListRequest extends FormRequest
 {
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -16,20 +17,26 @@ class GetShoppingListsRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "id" => [
+                'required',
+                'int',
+                'exists:shopping_lists'
+            ],
             "account_id" => [
                 'required',
                 'int',
-                'exists:shopping_lists',
+                'exists:accounts',
                 new UserHasAccountAccessRule()
             ]
         ];
     }
 
     protected function prepareForValidation(): void {
-        $user = auth()->user();
+        $listAccount = ShoppingList::show($this->route()->parameter('id'));
 
         $this->merge([
-            'account_id' => $user->activeAccount->id
+            'id' => $this->route()->parameter('id'),
+            'account_id' => $listAccount->account_id
         ]);
     }
 }
