@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\{ShoppingListController, ShoppingItemController };
+use App\Http\Controllers\{ShoppingListController, ShoppingItemController };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MeController;
@@ -17,11 +17,19 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('/logout', LogoutController::class);
 
     Route::get('/shopping-lists', [ShoppingListController::class, 'index']);
-    Route::post('/shopping-list', [ShoppingListController::class, 'store']);
-    Route::get('/shopping-list/{id}', [ShoppingListController::class, 'find']);
+    Route::post('/shopping-lists', [ShoppingListController::class, 'store']);
+    Route::get('/shopping-list/{shoppingList}', [ShoppingListController::class, 'show']);
 
-    Route::get('/shopping-lists/{shoppingList}/items', [ShoppingItemController::class, 'index',]);
-    Route::post('/shopping-lists/{shoppingList}/items', [ShoppingItemController::class, 'store',]);
+    Route::prefix('shopping-lists/{shoppingList}')->group(function () {
+        Route::get('items', [ShoppingItemController::class, 'index']);
+        Route::post('items', [ShoppingItemController::class, 'store']);
+    });
+
+    Route::prefix('shopping-items')->group(function () {
+        Route::patch('{item}', [ShoppingItemController::class, 'update']);
+        Route::patch('{item}/toggle', [ShoppingItemController::class, 'toggle']);
+        Route::delete('{item}', [ShoppingItemController::class, 'destroy']);
+    });
 });
 
 
