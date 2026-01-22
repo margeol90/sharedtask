@@ -12,7 +12,7 @@ class ShoppingListResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'name' => $this->user_name,
+            'name' => $this->name,
             'items' => ShoppingItemResource::collection($this->whenLoaded('items')),
         ];
         
