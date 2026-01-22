@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ItemNameUniqueOnList;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreShoppingItemRequest extends FormRequest
@@ -14,7 +15,9 @@ class StoreShoppingItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', new ItemNameUniqueOnList($this->route('shoppingList'))],
         ];
     }
+
+
 }
