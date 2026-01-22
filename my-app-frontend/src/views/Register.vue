@@ -39,6 +39,16 @@
             class="w-full border border-indigo-700 rounded-xl text-indigo-700 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
           />
         </div>
+        <div>
+          <label class="block mb-1 font-medium text-gray-700">Confirm assword</label>
+          <input
+            v-model="password_confirmation"
+            type="password"
+            required
+            placeholder="••••••••"
+            class="w-full border border-indigo-700 rounded-xl text-indigo-700 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+          />
+        </div>
 
         <button
           type="submit"
