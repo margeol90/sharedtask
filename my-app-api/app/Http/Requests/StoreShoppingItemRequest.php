@@ -14,10 +14,14 @@ class StoreShoppingItemRequest extends FormRequest
 
     public function rules()
     {
+        $shoppingList = $this->route('shoppingList');
+
+        $shoppingListId = $shoppingList instanceof \App\Models\ShoppingList
+            ? $shoppingList->id
+            : (int) $shoppingList;
+
         return [
-            'name' => ['required', 'string', 'max:255', new ItemNameUniqueOnList($this->route('shoppingList'))],
+            'name' => ['required', 'string', 'max:255', new ItemNameUniqueOnList($shoppingListId)],
         ];
     }
-
-
 }

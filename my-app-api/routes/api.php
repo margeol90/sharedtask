@@ -23,13 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('shopping-lists/{shoppingList}')->group(function () {
         Route::get('items', [ShoppingItemController::class, 'index']);
         Route::post('items', [ShoppingItemController::class, 'store']);
+        Route::patch('items/{item}', [ShoppingItemController::class, 'update']);
+        Route::patch('items/{item}/toggle', [ShoppingItemController::class, 'toggle']);
+        Route::delete('items/{item}', [ShoppingItemController::class, 'destroy']);
     });
 
-    Route::prefix('shopping-items')->group(function () {
-        Route::patch('{item}', [ShoppingItemController::class, 'update']);
-        Route::patch('{item}/toggle', [ShoppingItemController::class, 'toggle']);
-        Route::delete('{item}', [ShoppingItemController::class, 'destroy']);
-    });
 });
 
 

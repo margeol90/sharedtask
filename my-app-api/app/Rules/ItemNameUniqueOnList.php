@@ -10,11 +10,11 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class ItemNameUniqueOnList implements ValidationRule
 {
 
-    protected $shoppingList;
+    protected $shoppingListID;
 
-    public function __construct(ShoppingList $shoppingList)
+    public function __construct($shoppingListID)
     {
-        $this->shoppingList = $shoppingList;
+        $this->shoppingListID = $shoppingListID;
     }
 
     /**
@@ -24,8 +24,11 @@ class ItemNameUniqueOnList implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        $shoppingList = ShoppingList::find($this->shoppingListID);
         // Check if a shopping list with this name exists for any of the user's accounts
-        if($this->shoppingList->items()->where('name', $value)->exists())
+        if(ShoppingItem::where('shopping_list_id', $this->shoppingListID)
+            ->where('name', $value)
+            ->exists())
         {
             $fail('This item already exists in this list');
         }

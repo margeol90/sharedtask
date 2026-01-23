@@ -13,8 +13,7 @@ class ShoppingItemController extends Controller
     public function index(ShoppingList $shoppingList)
     {
         $this->authorize('view', $shoppingList);
-
-        return ShoppingItemResource::collection($shoppingList->items()->latest()->get());
+        return new ShoppingItemResource($shoppingList->items()->latest()->get());
     }
 
     public function store(StoreShoppingItemRequest $request, ShoppingList $shoppingList)
@@ -26,8 +25,10 @@ class ShoppingItemController extends Controller
         return new ShoppingItemResource($item);
     }
 
-    public function update(StoreShoppingItemRequest $request, ShoppingItem $item)
+    public function update(StoreShoppingItemRequest $request, $itemID)
     {
+        $item = ShoppingItem::findOrFail($itemID);
+
         $this->authorize('update', $item->shoppingList);
 
         $item->update($request->validated());
@@ -35,18 +36,24 @@ class ShoppingItemController extends Controller
         return new ShoppingItemResource($item);
     }
 
-    public function toggle(ShoppingItem $item)
+    public function toggle(int $listID, int $itemID)
     {
-        $this->authorize('update', $item->shoppingList);
+        $item = ShoppingItem::findOrFail($itemID);
+        $list = ShoppingList::findOrFail($listID);
+
+        $this->authorize('update', $list);
 
         $item->update(['is_completed' => ! $item->is_completed]);
 
         return new ShoppingItemResource($item);
     }
 
-    public function destroy(ShoppingItem $item)
+    public function destroy(int $listID, int $itemID)
     {
-        $this->authorize('delete', $item->shoppingList);
+        $item = ShoppingItem::findOrFail($itemID);
+        $list = ShoppingList::findOrFail($listID);
+
+        $this->authorize('delete', $list);
 
         $item->delete();
 

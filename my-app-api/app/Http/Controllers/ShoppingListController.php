@@ -33,8 +33,10 @@ class ShoppingListController extends Controller
         return new ShoppingListResource($shoppingList->load('items'));
     }
 
-    public function show(ShoppingList $shoppingList)
+    public function show( $shoppingListID)
     {
+        $shoppingList = ShoppingList::findOrFail($shoppingListID);
+
         $this->authorize('view', $shoppingList);
 
         return new ShoppingListResource($shoppingList->load('items'));
